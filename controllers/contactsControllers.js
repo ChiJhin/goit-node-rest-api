@@ -1,4 +1,4 @@
-import  express, { json }  from "express";
+
 
 import { listContacts, getContactById, addContact, removeContact, updateContactById } from "../services/contactsServices.js";
 
@@ -18,7 +18,7 @@ export const getOneContact = async (req, res) => {
       const contact = await getContactById(id);
 
       if (!contact) {
-         res.status(404).json({message: "Not found"})
+         return  res.status(404).json({message: "Not found"})
       }
       res.status(200).json(contact)
    } catch (error) {
@@ -34,7 +34,7 @@ export const deleteContact = async (req, res) => {
       const contact = await removeContact(id);
 
       if (!contact) {
-         res.status(404).json({message: "Not found"})
+        return res.status(404).json({message: "Not found"})
       }
       res.sendStatus(200);
    } catch (error) {
@@ -64,7 +64,7 @@ export const updateContact = async (req, res) => {
    const update = await updateContactById(id, req.body);
 
    if (!update) {
-      res.status(404).json({message: "Not found"})
+     return res.status(404).json({message: "Not found"})
    }
 
    res.status(200).json(update)
