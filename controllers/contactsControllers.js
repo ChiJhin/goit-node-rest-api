@@ -1,11 +1,9 @@
-
-
-import { listContacts, getContactById, addContact, removeContact, updateContactById } from "../services/contactsServices.js";
-
+import Contact from "../models/contact.js";
 
 export const getAllContacts = async (req, res, next) => {
  try {
-    res.status(200).json(await listContacts())
+   const contacts = await Contact.find();
+   res.status(200).json(contacts);
  } catch (error) {
     next(error)
  }
@@ -15,7 +13,7 @@ export const getOneContact = async (req, res) => {
    try {
       const {id} = req.params
       
-      const contact = await getContactById(id);
+      const contact = await Contact.findById(id);
 
       if (!contact) {
          return  res.status(404).json({message: "Not found"})
@@ -31,7 +29,7 @@ export const deleteContact = async (req, res) => {
    try {
       const {id} = req.params
       
-      const contact = await removeContact(id);
+      const contact = await Contact.findByIdAndDelete(id)
 
       if (!contact) {
         return res.status(404).json({message: "Not found"})
@@ -45,11 +43,9 @@ export const deleteContact = async (req, res) => {
 
 export const createContact = async (req, res) => {
    try {
-      const {name, email, phone} = req.body
+      const createContact = await Contact.create(req.body)
 
-      const create = await addContact(name, email, phone)
-
-      res.status(201).json(create)
+      res.status(201).json(createContact)
 
    } catch (error) {
       console.log(error)
@@ -61,7 +57,11 @@ export const updateContact = async (req, res) => {
 
    const {id} = req.params
 
-   const update = await updateContactById(id, req.body);
+   const { name, email, phone } = req.body;
+
+   const update = await Contact.findByIdAndUpdate(id,
+      { name, email, phone },{ new: true },
+    );
 
    if (!update) {
      return res.status(404).json({message: "Not found"})
@@ -69,3 +69,20 @@ export const updateContact = async (req, res) => {
 
    res.status(200).json(update)
 };
+
+export const updateStatusContact = async (req, res, next) => {
+   try {
+     const { id } = req.params;
+     const { favorite } = req.body;
+     const updatedFavorite = await Contact.findByIdAndUpdate(id, 
+       { favorite },{ new: true });
+ 
+     if (!updatedFavorite) {
+      return res.status(404).json({message: "Not found"})
+     }
+ 
+     res.status(200).json(updatedFavorite);
+   } catch (error) {
+     next(error);
+   }
+ };
