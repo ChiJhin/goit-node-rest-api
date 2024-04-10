@@ -57,10 +57,10 @@ export const updateContact = async (req, res) => {
 
    const {id} = req.params
 
-   const { name, email, phone } = req.body;
+   const { name, email, phone, favorite } = req.body;
 
    const update = await Contact.findByIdAndUpdate(id,
-      { name, email, phone },{ new: true },
+      { name, email, phone, favorite },{ new: true },
     );
 
    if (!update) {
