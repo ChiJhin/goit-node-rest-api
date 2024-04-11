@@ -20,7 +20,7 @@ export const getOneContact = async (req, res) => {
       }
       res.status(200).json(contact)
    } catch (error) {
-      console.log(error)
+      next(error)
       
    }
 };
@@ -36,7 +36,7 @@ export const deleteContact = async (req, res) => {
       }
       res.sendStatus(200);
    } catch (error) {
-      console.log(error)
+      next(error)
       
    }
 };
@@ -48,7 +48,7 @@ export const createContact = async (req, res) => {
       res.status(201).json(createContact)
 
    } catch (error) {
-      console.log(error)
+      next(error)
       
    }
 };
