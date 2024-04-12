@@ -1,6 +1,6 @@
 import Contact from "../models/contact.js";
 
-export const getAllContacts = async (req, res, next) => {
+export const getAllContacts = async (_, res, next) => {
  try {
    const contacts = await Contact.find();
    res.status(200).json(contacts);
@@ -9,7 +9,7 @@ export const getAllContacts = async (req, res, next) => {
  }
 };
 
-export const getOneContact = async (req, res) => {
+export const getOneContact = async (req, res, next) => {
    try {
       const {id} = req.params
       
@@ -25,7 +25,7 @@ export const getOneContact = async (req, res) => {
    }
 };
 
-export const deleteContact = async (req, res) => {
+export const deleteContact = async (req, res, next) => {
    try {
       const {id} = req.params
       
@@ -41,7 +41,7 @@ export const deleteContact = async (req, res) => {
    }
 };
 
-export const createContact = async (req, res) => {
+export const createContact = async (req, res, next) => {
    try {
       const createContact = await Contact.create(req.body)
 
