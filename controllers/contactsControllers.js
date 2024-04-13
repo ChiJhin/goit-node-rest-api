@@ -53,21 +53,25 @@ export const createContact = async (req, res, next) => {
    }
 };
 
-export const updateContact = async (req, res) => {
+export const updateContact = async (req, res, next) => {
 
-   const {id} = req.params
+   try {
+      const {id} = req.params
 
-   const { name, email, phone, favorite } = req.body;
-
-   const update = await Contact.findByIdAndUpdate(id,
-      { name, email, phone, favorite },{ new: true },
-    );
-
-   if (!update) {
-     return res.status(404).json({message: "Not found"})
+      const { name, email, phone, favorite } = req.body;
+   
+      const update = await Contact.findByIdAndUpdate(id,
+         { name, email, phone, favorite },{ new: true },
+       );
+   
+      if (!update) {
+        return res.status(404).json({message: "Not found"})
+      }
+   
+      res.status(200).json(update)
+   } catch (error) {
+      next(error);
    }
-
-   res.status(200).json(update)
 };
 
 export const updateStatusContact = async (req, res, next) => {
