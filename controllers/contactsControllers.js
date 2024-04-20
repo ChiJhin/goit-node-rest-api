@@ -1,50 +1,64 @@
 import { catchAsync } from "../helpers/catchAsync.js";
-import { Contacts } from "../models/contactsModel.js";
+import HttpError from "../helpers/HttpError.js";
+import { createContactSchema, updateContactSchema, patchContactSchema } from "../schemas/contactsSchemas.js";
+import { makeUser, getContacts, deleteChooseContact, updateChooseContact, changeStatus} from "../services/contactServises.js";
 
 
 
 export const getAllContacts = catchAsync (async (req, res) => {
-    const list = await Contacts.find({ owner: req.user.id });   
-        res.status(200).json( list); 
+    const list = await getContacts(req.user.id)  
+
+    res.status(200).json( list); 
 });
 
-export const getOneContact = catchAsync(async (req, res, next) => {
-        const getOne = await req.contact;
-        console.log(getOne)
-        res.json(getOne).status(200);
+export const getOneContact = catchAsync(async (req, res) => {
+    const getOne = await req.contact;
+        
+    res.json(getOne).status(200);
     });
 
 
 export const deleteContact = catchAsync (async (req, res) => {
-        const deleteContact = await Contacts.findByIdAndDelete(req.params.id);
+        const deleteContact = await deleteChooseContact(req.params.id)
+
         res.json(deleteContact).status(200);
 });
 
 
 export const createContact = catchAsync (async (req, res) => {
-    const contact = {
-        name: req.body.name,
-        email: req.body.email,
-        phone: req.body.phone,
-        owner: req.user.id,
-    }
-    const newUser = await Contacts.create(contact);
+const {value, error} = createContactSchema(req.body)
+
+    if(error) throw new HttpError(400)
+    
+    const newUser = await makeUser(value, req.user.id)
+
     if(!newUser) {
         return res.status(400).json({ message: 'Contact not created' });
     }
-    res.status(201).json(newUser);
 
+    res.status(201).json(newUser);
 });
 
 
-export const updateContact = catchAsync(async (req, res, next) => {
-    const update = await Contacts.findByIdAndUpdate(req.params.id, req.body, {new: true});
+export const updateContact = catchAsync(async (req, res) => {
+    const {value, error} = updateContactSchema(req.body)
+
+    if(error) throw new HttpError(400)
+
+    const update = await updateChooseContact(req.params.id, ...value)
+
     res.json(update).status(200);
 });
 
 
-export const updateStatus = catchAsync(async (req, res, next) => {
+export const updateStatus = catchAsync(async (req, res) => {
+    const {value, error} = patchContactSchema(req.body)
+
+    if(error) throw new HttpError(400)
+
     const { id } = req.params;  
-    const update = await Contacts.findByIdAndUpdate(id, req.body, {new: true});
+
+    const update = await changeStatus(id, value)
+
     res.status(200).json(update);
 }); 

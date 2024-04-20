@@ -1,4 +1,4 @@
-import { Router } from "express";
+import express from "express";
 
 import {
   getAllContacts,
@@ -9,15 +9,13 @@ import {
   updateStatus,
 } from "../controllers/contactsControllers.js";
 
-import { validateBody } from "../helpers/validate.js";
+import { checkFavorite, checkUserBody, checkUserId } from "../middlewares/userMiddlewares.js";
 
-import { createContactSchema, patchContactSchema, updateContactSchema } from "../schemas/contactsSchemas.js";
-import {  checkFavorite, checkUserId, checkUserData } from "../middlewares/userMiddlewares.js";
-import { authenticate } from "../middlewares/authMiddlewares.js";
+import { protect } from "../middlewares/authMiddlewares.js";
 
-const router = Router();
+const router = express.Router();
 
-router.use(authenticate);
+router.use(protect);
 router.get("/", getAllContacts);
 
 router.use("/:id",checkUserId);
@@ -25,10 +23,10 @@ router.
 route("/:id")
 .get(getOneContact)
 .delete(deleteContact)
-.put(checkUserData, validateBody(updateContactSchema), updateContact); 
+.put(checkUserBody, updateContact); 
 
-router.post("/",validateBody(createContactSchema), createContact);
+router.post("/", createContact);
 
-router.patch("/:id/favourite", validateBody(patchContactSchema), checkFavorite, updateStatus); 
+router.patch("/:id/favourite", checkFavorite, updateStatus); 
 
 export {router};

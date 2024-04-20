@@ -1,6 +1,5 @@
 import {model, Schema} from 'mongoose';    
 import bcrypt from 'bcrypt';
-
 import { userSubscription } from '../constants/const.js';
 
 const userSchemas = new Schema({
@@ -30,8 +29,11 @@ const userSchemas = new Schema({
 
   userSchemas.pre('save', async function (next) {
     if(!this.isModified('password')) return next();
-    const salt = await bcrypt.genSalt(6);
+
+    const salt = await bcrypt.genSalt(10);
+
     this.password = await bcrypt.hash(this.password, salt);
+    
     next();
   }); 
   

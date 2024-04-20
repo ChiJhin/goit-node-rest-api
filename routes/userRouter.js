@@ -1,14 +1,13 @@
-import { Router } from "express";
+import express from "express";
 
-import { logIn, logout, singUp, getCurrent } from "../controllers/userControllers.js";
-import { authenticate, checkUserDataLogIn, checkUserDataSingUp } from "../middlewares/authMiddlewares.js";
+import { getCurrent, logIn, logout, signUp } from "../controllers/userControllers.js";
+import { protect, checkUserDataLogIn, checkUserDataSingUp } from "../middlewares/authMiddlewares.js"
 
+const router = express.Router()
 
-const router = Router();
-
-router.post("/register", checkUserDataSingUp , singUp);
+router.post("/register",  checkUserDataSingUp , signUp);
 router.post("/login", checkUserDataLogIn, logIn);
-router.post("/logout", authenticate ,logout);
-router.get("/current", authenticate, getCurrent);
+router.post("/logout", protect ,logout);
+router.get("/current", protect, getCurrent);
 
 export {router};

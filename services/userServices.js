@@ -1,15 +1,19 @@
-import bcrypt from "bcrypt";
-
 import HttpError from "../helpers/HttpError.js";
 import { User } from "../models/usersModel.js";
 import { createToken } from "./jwtServices.js";
+import bcrypt from "bcrypt";
 
-export const registrate = async (data) => {
+export const register = async (data) => {
   const newUser = await User.create({
     ...data,
   });
   newUser.password = undefined;
   return newUser;
+};
+
+export const checkEmail = async (email) => {
+  const user = await User.findOne({ email });
+  return user;
 };
 
 export const updateUserToken = async (id) => {
@@ -38,10 +42,5 @@ export const checkUser = async (data) => {
   userWithToken.password = undefined;
 
   return userWithToken;
-};
-
-export const checkEmail = async (email) => {
-  const user = await User.findOne({ email });
-  return user;
 };
 

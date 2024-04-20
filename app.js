@@ -4,13 +4,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-import {router as usersRouter} from "./routes/contactsRouter.js";
 import {router as contactsRouter} from "./routes/contactsRouter.js";
+import  {router as usersRouter}  from "./routes/userRouter.js";
+import { globalErrorHandler } from "./controllers/errorController.js";
 
 const app = express();
-
 dotenv.config();
-
 mongoose
 .connect(process.env.DB_HOST)
 .then(() => console.log("Database connection successful"))
@@ -19,19 +18,24 @@ mongoose
   process.exit(1); // вихід з програми
 });
 
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 
-const pathPrefix = '/api/v1';
+const pathPrefix = '/api';
 
-app.use(`${pathPrefix}/contacts`, contactsRouter);
-app.use(`${pathPrefix}/users`, usersRouter);
+app.use("/users", usersRouter);
+
+app.use(`${pathPrefix}/contacts`, contactsRouter); 
+
+app.use(globalErrorHandler);
 
 
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
 });
+
 
 app.use((err, req, res, next) => {
   const { status = 500, message = "Server error" } = err;

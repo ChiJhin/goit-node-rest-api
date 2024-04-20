@@ -1,8 +1,7 @@
 import Joi from "joi";
+import validate from "../helpers/validate.js";
 
-import { validateUser } from "../helpers/validate.js";
-
-export const signUpSchema = validateUser((data) =>
+export const signUpSchema = validate((data) =>
   Joi.object()
     .options({ abortEarly: false })
     .keys({
@@ -14,7 +13,7 @@ export const signUpSchema = validateUser((data) =>
     .validate(data)
 );
 
-export const loginSchema = validateUser((data) =>
+export const loginSchema = validate((data) =>
   Joi.object()
     .options({ abortEarly: false })
     .keys({
