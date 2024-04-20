@@ -1,11 +1,50 @@
-import contactsService from "../services/contactsServices.js";
+import { catchAsync } from "../helpers/catchAsync.js";
+import { Contacts } from "../models/contactsModel.js";
 
-export const getAllContacts = (req, res) => {};
 
-export const getOneContact = (req, res) => {};
 
-export const deleteContact = (req, res) => {};
+export const getAllContacts = catchAsync (async (req, res) => {
+    const list = await Contacts.find({ owner: req.user.id });   
+        res.status(200).json( list); 
+});
 
-export const createContact = (req, res) => {};
+export const getOneContact = catchAsync(async (req, res, next) => {
+        const getOne = await req.contact;
+        console.log(getOne)
+        res.json(getOne).status(200);
+    });
 
-export const updateContact = (req, res) => {};
+
+export const deleteContact = catchAsync (async (req, res) => {
+        const deleteContact = await Contacts.findByIdAndDelete(req.params.id);
+        res.json(deleteContact).status(200);
+});
+
+
+export const createContact = catchAsync (async (req, res) => {
+    const contact = {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        owner: req.user.id,
+    }
+    const newUser = await Contacts.create(contact);
+    if(!newUser) {
+        return res.status(400).json({ message: 'Contact not created' });
+    }
+    res.status(201).json(newUser);
+
+});
+
+
+export const updateContact = catchAsync(async (req, res, next) => {
+    const update = await Contacts.findByIdAndUpdate(req.params.id, req.body, {new: true});
+    res.json(update).status(200);
+});
+
+
+export const updateStatus = catchAsync(async (req, res, next) => {
+    const { id } = req.params;  
+    const update = await Contacts.findByIdAndUpdate(id, req.body, {new: true});
+    res.status(200).json(update);
+}); 
