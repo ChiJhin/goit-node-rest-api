@@ -28,7 +28,7 @@ export const logIn = catchAsync(async (req, res) => {
 export const logout = catchAsync(async (req, res) => {
     const { id } = req.user;        
   
-    await User.findByIdAndUpdate(id, { token: null });
+    await User.findOneAndUpdate(id, { token: null });
   
     res.status(204).send();
 });

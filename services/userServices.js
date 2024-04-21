@@ -23,7 +23,7 @@ export const checkEmail = async (email) => {
 export const updateUserToken = async (id) => {
   const token = createToken(id);
   
-  await User.findByIdAndUpdate(id, { token });
+  await User.findOneAndUpdate(id, { token });
   
   return token;
 };
@@ -33,15 +33,15 @@ export const checkUser = async (data) => {
 
   const user = await User.findOne({ email }).select("+password");
   
-  if (!user) throw new HttpError(401, "Invalid data...");
+  if (!user) throw new HttpError(401, "Email or password is wrong");
 
   const isValidPassword = await bcrypt.compare(password, user.password);
 
-  if (!isValidPassword) throw new HttpError(401, "Invalid data...");
+  if (!isValidPassword) throw new HttpError(401, "Email or password is wrong");
 
   const token = createToken(user._id);
 
-  const userUpdate = await User.findByIdAndUpdate(
+  const userUpdate = await User.findOneAndUpdate(
     user._id,
     { token },
     { new: true }
