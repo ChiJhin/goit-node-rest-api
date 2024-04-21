@@ -1,7 +1,8 @@
+import bcrypt from "bcrypt";
+
 import HttpError from "../helpers/HttpError.js";
 import { User } from "../models/usersModel.js";
 import { createToken } from "./jwtServices.js";
-import bcrypt from "bcrypt";
 
 export const register = async (data) => {
   const newUser = await User.create({
@@ -50,4 +51,3 @@ export const checkUser = async (data) => {
 
   return userUpdate;
 };
-

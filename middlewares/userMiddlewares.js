@@ -4,7 +4,6 @@ import { catchAsync } from "../helpers/catchAsync.js";
 import HttpError from "../helpers/HttpError.js";
 import { Contacts } from "../models/contactsModel.js";
 
-
 export const checkUserId = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
@@ -19,12 +18,11 @@ export const checkUserId = catchAsync(async (req, res, next) => {
   next();
 }); 
 
-export const checkUserData = catchAsync(async (req, res, next) => {
-  if (!Object.keys(req.body).length)
-    throw new HttpError(400, "Data must have one cheange");
+export const checkUserData = (req, res, next) => {
+  if (!Object.keys(req.body).length) throw new HttpError(400, "Data must have one cheange");
   
     next();
-});
+};
 
 export const checkFavorite = catchAsync(async (req, res, next) => {
   const { id } = req.params;
@@ -33,9 +31,7 @@ export const checkFavorite = catchAsync(async (req, res, next) => {
   
   if (!contact || contact.owner.toString()!== req.user.id ) throw new HttpError(404);
   
-  if (req.body.favourite === undefined)
-    throw new HttpError(400, "Favorite is missing");
+  if (req.body.favourite === undefined) throw new HttpError(400, "Favorite is missing");
   
     next();
 });
-

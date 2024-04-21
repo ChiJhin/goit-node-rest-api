@@ -27,7 +27,7 @@ const userSchemas = new Schema({
   }
 );
 
-  userSchemas.pre('save', async function (next) {
+  userSchemas.pre('save', async function(next) {
     if(!this.isModified('password')) return next();
 
     const salt = await bcrypt.genSalt(10);
@@ -37,4 +37,4 @@ const userSchemas = new Schema({
     next();
   }); 
   
-  export const User = model('User', userSchemas); 
+  export const User = model('User', userSchemas);

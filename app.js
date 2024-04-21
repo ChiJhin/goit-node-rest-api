@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import {router as contactsRouter} from "./routes/contactsRouter.js";
-import  {router as usersRouter}  from "./routes/userRouter.js";
+import {router as usersRouter} from "./routes/userRouter.js";
 import { globalErrorHandler } from "./controllers/errorController.js";
 
 const app = express();
@@ -31,11 +31,9 @@ app.use(`${pathPrefix}/contacts`, contactsRouter);
 
 app.use(globalErrorHandler);
 
-
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
 });
-
 
 app.use((err, req, res, next) => {
   const { status = 500, message = "Server error" } = err;

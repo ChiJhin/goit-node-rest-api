@@ -1,9 +1,7 @@
 import jwt from "jsonwebtoken";
 import HttpError from "../helpers/HttpError.js";
 
-export const createToken = (id) => {
-  return jwt.sign({ id }, process.env.SECRET_TOKEN, { expiresIn: "2d" });
-};
+export const createToken = (id) => jwt.sign({ id }, process.env.SECRET_TOKEN, { expiresIn: "2d" });
 
 export const checkToken = (token) => {
   if (!token) throw new HttpError(401);

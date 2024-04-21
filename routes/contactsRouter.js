@@ -1,10 +1,10 @@
 import express from "express";
 
 import {
+  createContact,
+  deleteContact,
   getAllContacts,
   getOneContact,
-  deleteContact,
-  createContact,
   updateContact,
   updateStatus,
 } from "../controllers/contactsControllers.js";

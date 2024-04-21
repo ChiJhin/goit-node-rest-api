@@ -1,9 +1,7 @@
 import { catchAsync } from "../helpers/catchAsync.js";
 import HttpError from "../helpers/HttpError.js";
-import { createContactSchema, updateContactSchema, patchContactSchema } from "../schemas/contactsSchemas.js";
-import { makeUser, getContacts, deleteChooseContact, updateChooseContact, changeStatus} from "../services/contactServises.js";
-
-
+import { createContactSchema, patchContactSchema, updateContactSchema } from "../schemas/contactsSchemas.js";
+import { changeStatus, deleteChooseContact, getContacts, makeUser, updateChooseContact} from "../services/contactServises.js";
 
 export const getAllContacts = catchAsync (async (req, res) => {
     const list = await getContacts(req.user.id)  
@@ -17,13 +15,11 @@ export const getOneContact = catchAsync(async (req, res) => {
     res.json(getOne).status(200);
     });
 
-
 export const deleteContact = catchAsync (async (req, res) => {
-    const deleteContact = await deleteChooseContact(req.params.id)
+    const delContact = await deleteChooseContact(req.params.id)
 
-    res.json(deleteContact).status(200);
+    res.json(delContact).status(200);
 });
-
 
 export const createContact = catchAsync (async (req, res) => {
     const {value, error} = createContactSchema(req.body)
@@ -39,7 +35,6 @@ export const createContact = catchAsync (async (req, res) => {
     res.status(201).json(newUser);
 });
 
-
 export const updateContact = catchAsync(async (req, res) => {
     const {value, error} = updateContactSchema(req.body)
 
@@ -49,7 +44,6 @@ export const updateContact = catchAsync(async (req, res) => {
 
     res.json(update).status(200);
 });
-
 
 export const updateStatus = catchAsync(async (req, res) => {
     const {value, error} = patchContactSchema(req.body)

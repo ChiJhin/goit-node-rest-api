@@ -19,14 +19,14 @@ export const checkUserSingUp = catchAsync(async (req, res, next) => {
     next();
   });
   
-  export const checkUserLogIn = catchAsync(async (req, res, next) => {
+  export const checkUserLogIn = (req, res, next) => {
     const { value, errors } = loginSchema(req.body);
   
     if (errors) throw new HttpError(400, errors.message);
   
     req.body = value;
     next();
-  });
+  };
   
   export const protect = catchAsync(async (req, res, next) => {
   
@@ -45,5 +45,3 @@ export const checkUserSingUp = catchAsync(async (req, res, next) => {
   
     next();
   });
-  
-  
