@@ -7,8 +7,10 @@ export const createToken = (id) => {
 
 export const checkToken = (token) => {
   if (!token) throw new HttpError(401);
+
   try {
     const { id } = jwt.verify(token, process.env.SECRET_TOKEN);
+    
     return id;
   } catch (error) {
     throw new HttpError(401);

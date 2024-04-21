@@ -9,7 +9,7 @@ import {
   updateStatus,
 } from "../controllers/contactsControllers.js";
 
-import { checkFavorite, checkUserBody, checkUserId } from "../middlewares/userMiddlewares.js";
+import { checkFavorite, checkUserData, checkUserId } from "../middlewares/userMiddlewares.js";
 
 import { protect } from "../middlewares/authMiddlewares.js";
 
@@ -23,7 +23,7 @@ router.
 route("/:id")
 .get(getOneContact)
 .delete(deleteContact)
-.put(checkUserBody, updateContact); 
+.put(checkUserData, updateContact); 
 
 router.post("/", createContact);
 

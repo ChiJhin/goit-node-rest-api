@@ -19,14 +19,14 @@ export const getOneContact = catchAsync(async (req, res) => {
 
 
 export const deleteContact = catchAsync (async (req, res) => {
-        const deleteContact = await deleteChooseContact(req.params.id)
+    const deleteContact = await deleteChooseContact(req.params.id)
 
-        res.json(deleteContact).status(200);
+    res.json(deleteContact).status(200);
 });
 
 
 export const createContact = catchAsync (async (req, res) => {
-const {value, error} = createContactSchema(req.body)
+    const {value, error} = createContactSchema(req.body)
 
     if(error) throw new HttpError(400)
     
