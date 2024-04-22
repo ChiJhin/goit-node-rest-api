@@ -27,6 +27,6 @@ route("/:id")
 
 router.post("/", createContact);
 
-router.patch("/:id/favourite", checkFavorite, updateStatus); 
+router.patch("/:id/favorite", checkFavorite, updateStatus); 
 
 export {router};

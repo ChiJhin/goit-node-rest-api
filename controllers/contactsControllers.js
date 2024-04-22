@@ -16,7 +16,7 @@ export const getOneContact = catchAsync(async (req, res) => {
     });
 
 export const deleteContact = catchAsync (async (req, res) => {
-    const delContact = await deleteChooseContact(req.params.id)
+    const delContact = await deleteChooseContact(req.params.id, req.user.id)
 
     res.json(delContact).status(200);
 });
@@ -40,7 +40,7 @@ export const updateContact = catchAsync(async (req, res) => {
 
     if(error) throw new HttpError(400)
 
-    const update = await updateChooseContact(req.params.id, ...value)
+    const update = await updateChooseContact(req.params.id, ...value, req.user.id)
 
     res.json(update).status(200);
 });
@@ -52,7 +52,7 @@ export const updateStatus = catchAsync(async (req, res) => {
 
     const { id } = req.params;  
 
-    const update = await changeStatus(id, value)
+    const update = await changeStatus(id, value, req.user.id)
 
     res.status(200).json(update);
 }); 
