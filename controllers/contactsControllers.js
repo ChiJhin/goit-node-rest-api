@@ -10,13 +10,15 @@ export const getAllContacts = catchAsync (async (req, res) => {
 });
 
 export const getOneContact = catchAsync(async (req, res) => {
-    const getOne = await req.contact;
+    const contact = await req.contact;
         
-    res.json(getOne).status(200);
+    res.json(contact).status(200);
     });
 
 export const deleteContact = catchAsync (async (req, res) => {
-    const delContact = await deleteChooseContact(req.params.id, req.user.id)
+    const contactId = req.contact.id;
+
+    const delContact = await deleteChooseContact(contactId, req.user.id)
 
     res.json(delContact).status(200);
 });
@@ -40,7 +42,9 @@ export const updateContact = catchAsync(async (req, res) => {
 
     if(error) throw new HttpError(400)
 
-    const update = await updateChooseContact(req.params.id, ...value, req.user.id)
+    const contactId = await req.contact.id;
+
+    const update = await updateChooseContact(contactId, value, req.user.id)
 
     res.json(update).status(200);
 });
@@ -49,10 +53,10 @@ export const updateStatus = catchAsync(async (req, res) => {
     const {value, error} = patchContactSchema(req.body)
 
     if(error) throw new HttpError(400)
+    
+    const contactId = await req.contact.id;
 
-    const { id } = req.params;  
-
-    const update = await changeStatus(id, value, req.user.id)
+    const update = await changeStatus(contactId, value, req.user.id)
 
     res.status(200).json(update);
 }); 

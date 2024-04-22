@@ -19,7 +19,11 @@ mongoose
   process.exit(1); // вихід з програми
 });
 
-process.env.NODE_ENV = DEV ? app.use(morgan('dev')) : app.use(morgan("tiny"));
+if (process.env.NODE_ENV === DEV) {
+  app.use(morgan('dev'))
+} else {
+  app.use(morgan("tiny"));
+}
 
 app.use(cors());
 app.use(express.json());
@@ -30,6 +34,8 @@ app.use("/users", usersRouter);
 
 app.use(`${pathPrefix}/contacts`, contactsRouter); 
 
+app.use(globalErrorHandler);
+
 app.use((_, res) => {
   res.status(404).json({ message: "Route not found" });
 });
@@ -38,8 +44,6 @@ app.use((err, req, res, next) => {
   const { status = 500, message = "Server error" } = err;
   res.status(status).json({ message });
 });
-
-app.use(globalErrorHandler);
 
 const port = +process.env.PORT
 

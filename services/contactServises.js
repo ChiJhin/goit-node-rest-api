@@ -5,20 +5,30 @@ export const makeUser = (userData, owner) => Contacts.create({...userData, owner
 
 export const getContacts = (id) => Contacts.find({ owner: id });  
 
-export const deleteChooseContact = (id, owner) => {
-    const contact = Contacts.findById(id)
-    if (!contact.owner|| contact.owner !== owner) throw new HttpError(409, "Not your contact!")
-    Contacts.findOneAndDelete(id)
+export const deleteChooseContact = async (id, owner) => {
+    const contact = await Contacts.findById(id)
+
+    if (!contact.owner || contact.owner.toString() !== owner) throw new HttpError(409, "Not your contact!")
+
+    const upContact = Contacts.findOneAndDelete(id)
+
+    return upContact
 }
 
-export const updateChooseContact = (id, params, owner) => {
-    const contact = Contacts.findById(id)
-    if (!contact.owner|| contact.owner !== owner) throw new HttpError(409, "Not your contact!")
-    Contacts.findOneAndUpdate(id, params, {new: true});
+export const updateChooseContact = async (id, params, owner) => {
+    const contact = await Contacts.findById(id)
+
+    if (!contact.owner || contact.owner.toString() !== owner) throw new HttpError(409, "Not your contact!")
+
+    const upContact = Contacts.findOneAndUpdate({_id: id},{ $set: params }, {new: true});
+
+    return upContact
 }
 
-export const changeStatus = (id, value, owner) => {
-    const contact = Contacts.findById(id)
-    if (!contact.owner|| contact.owner !== owner) throw new HttpError(409, "Not your contact!")
-    Contacts.findOneAndUpdate(id, value, {new: true});
+export const changeStatus = async (id, value, owner) => {
+    const contact = await Contacts.findById(id)
+
+    if (!contact.owner || contact.owner.toString() !== owner) throw new HttpError(409, "Not your contact!")
+
+    Contacts.findOneAndUpdate({_id: id},{ $set: value }, {new: true});
 }
