@@ -5,7 +5,7 @@ const validate = (schema) => (data) => {
   
     return {
       value,
-      errors: error.details.map((err) => err.message),
+      error: error.details.map((err) => err.message),
     };
   };
   

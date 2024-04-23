@@ -1,7 +1,7 @@
 import { Contacts } from "../models/contactsModel.js"
 import HttpError from "../helpers/HttpError.js";
 
-export const makeUser = (userData, owner) => Contacts.create({...userData, owner})
+export const makeUser = (userData, owner) => Contacts.create({owner, ...userData})
 
 export const getContacts = (id) => Contacts.find({ owner: id });  
 

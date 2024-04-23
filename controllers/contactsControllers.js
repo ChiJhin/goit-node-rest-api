@@ -24,11 +24,8 @@ export const deleteContact = catchAsync (async (req, res) => {
 });
 
 export const createContact = catchAsync (async (req, res) => {
-    const {value, error} = createContactSchema(req.body)
-
-    if(error) throw new HttpError(400)
     
-    const newUser = await makeUser(value, req.user.id)
+    const newUser = await makeUser(req.body, req.user.id)
 
     if(!newUser) {
         return res.status(400).json({ message: 'Contact not created' });

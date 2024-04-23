@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 import { catchAsync } from "../helpers/catchAsync.js";
 import HttpError from "../helpers/HttpError.js";
 import { Contacts } from "../models/contactsModel.js";
+import { createContactSchema } from "../schemas/contactsSchemas.js";
 
 export const checkUserId = catchAsync(async (req, res, next) => {
   const { id } = req.params;
@@ -35,3 +36,13 @@ export const checkFavorite = catchAsync(async (req, res, next) => {
   
     next();
 });
+
+export const checkCreateUserData = (req, res, next) => {
+  const {value, error} = createContactSchema(req.body)
+
+  if(error) throw new HttpError(400)
+
+  req.body = value
+  
+    next();
+};
