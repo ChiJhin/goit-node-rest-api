@@ -6,9 +6,9 @@ import { checkEmail } from "../services/userServices.js";
 import {checkToken } from "../services/jwtServices.js";
 
 export const checkUserSingUp = catchAsync(async (req, res, next) => {
-    const { value, errors } = signUpSchema(req.body);
+    const { value, error } = signUpSchema(req.body);
     
-    if (errors) throw new HttpError(400, errors.message);
+    if (error) throw new HttpError(400, error.message);
   
     const emailCheck = await checkEmail(value.email);
     
@@ -20,9 +20,9 @@ export const checkUserSingUp = catchAsync(async (req, res, next) => {
   });
   
   export const checkUserLogIn = (req, res, next) => {
-    const { value, errors } = loginSchema(req.body);
+    const { value, error } = loginSchema(req.body);
   
-    if (errors) throw new HttpError(400, errors.message);
+    if (error) throw new HttpError(400, error.message);
   
     req.body = value;
     next();

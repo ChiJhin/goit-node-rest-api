@@ -30,7 +30,7 @@ export const patchContactSchema = validate((data) =>
     Joi.object()
     .options({ abortEarly: false })
     .keys({
-        favourite: Joi.boolean().required(),
+        favorite: Joi.boolean().required(),
     })
     .validate(data)
 );

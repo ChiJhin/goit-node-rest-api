@@ -13,7 +13,7 @@ const contactSchemas = new Schema({
         type: String, 
 
     }, 
-    favourite: { 
+    favorite: { 
         type: Boolean, 
         default: false, 
     },
