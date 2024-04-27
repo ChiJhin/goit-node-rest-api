@@ -63,8 +63,7 @@ export const updateMeService = async (userData, user, file) => {
         width: 200,
         height: 200,
       },
-      "avatars",
-      "images"
+      "avatars"
     );
   }
 
