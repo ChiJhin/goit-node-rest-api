@@ -38,7 +38,7 @@ const userSchemas = new Schema({
       console.log({ emailHash });
       console.log('<<<<<<<<<<<<<<<<<<<<<<<');
   
-      this.avatar = `https://gravatar.com/avatar/${emailHash}.jpg?d=robohash`;
+      this.avatarURL = `https://gravatar.com/avatar/${emailHash}.jpg?d=robohash`;
     }
 
     if(!this.isModified('password')) return next();
