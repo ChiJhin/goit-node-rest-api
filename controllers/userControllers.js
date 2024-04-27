@@ -1,6 +1,6 @@
 import { catchAsync } from "../helpers/catchAsync.js";
 import { User } from "../models/usersModel.js";
-import { checkUser, register } from "../services/userServices.js";
+import { checkUser, register, updateMeService } from "../services/userServices.js";
 
 export const signUp = catchAsync(async (req, res) => {
   const newUser = await register(req.body);
@@ -41,3 +41,13 @@ export const getCurrent = catchAsync(async (req, res) => {
       subscription,
     });     
 }); 
+
+export const updateMe = catchAsync(async (req, res) => {
+  const updatedUser = await updateMeService(req.body, req.user, req.file);
+
+  console.log(req.file)
+  
+  res.status(200).json({
+    user: updatedUser,
+  });
+});

@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import HttpError from "../helpers/HttpError.js";
 import { User } from "../models/usersModel.js";
 import { createToken } from "./jwtServices.js";
+import { ImageService } from "./avatarServise.js";
 
 export const register = async (data) => {
   const newUser = await User.create({
@@ -50,4 +51,31 @@ export const checkUser = async (data) => {
   userUpdate.password = undefined;
 
   return userUpdate;
+};
+
+export const updateMeService = async (userData, user, file) => {
+  if (file) {
+    // user.avatar = file.path.replace('public', '');
+    user.avatarURL = await ImageService.saveImage(
+      file,
+      {
+        maxFileSize: 5,
+        width: 200,
+        height: 200,
+      },
+      'images',
+      'users',
+      user._id
+    );
+  }
+
+  Object.keys(userData).forEach((key) => {
+    user[key] = userData[key];
+  });
+
+  console.log(user)
+
+  console.log(file)
+  
+  return user.save();
 };

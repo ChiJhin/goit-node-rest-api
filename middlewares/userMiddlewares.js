@@ -4,6 +4,7 @@ import { catchAsync } from "../helpers/catchAsync.js";
 import HttpError from "../helpers/HttpError.js";
 import { Contacts } from "../models/contactsModel.js";
 import { createContactSchema, patchContactSchema, updateContactSchema } from "../schemas/contactsSchemas.js";
+import { ImageService } from "../services/avatarServise.js";
 
 export const checkUserId = catchAsync(async (req, res, next) => {
   const { id } = req.params;
@@ -54,3 +55,5 @@ export const checkCreateUserData = (req, res, next) => {
   
     next();
 };
+
+export const uploadAvatar = ImageService.initUploadImageMiddleware('avatar');
