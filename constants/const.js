@@ -1,7 +1,7 @@
 export const userSubscription = {
-    PRO: 'pro',
-    STARTER: 'starter',
-    BUSINESS: 'business'
-}
+  PRO: 'pro',
+  STARTER: 'starter',
+  BUSINESS: 'business',
+};
 
-export const DEV = "development";
+export const DEV = 'development';

@@ -1,10 +1,9 @@
-import {model, Schema} from 'mongoose';    
+import { model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
-import crypto from "crypto"
-
 import { userSubscription } from '../constants/const.js';
 
-const userSchemas = new Schema({
+const userSchemas = new Schema(
+  {
     email: {
       type: String,
       required: [true, 'Email is required'],
@@ -18,36 +17,26 @@ const userSchemas = new Schema({
     subscription: {
       type: String,
       enum: Object.values(userSubscription),
-      default: "starter"
+      default: 'starter',
     },
     token: {
       type: String,
       default: null,
     },
-    avatarURL: String,
-  },{ 
+  },
+  {
     versionKey: false,
   }
 );
 
-  userSchemas.pre('save', async function(next) {
-    if (this.isNew) {
-      const emailHash = crypto.createHash('md5').update(this.email).digest('hex');
-  
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>');
-      console.log({ emailHash });
-      console.log('<<<<<<<<<<<<<<<<<<<<<<<');
-  
-      this.avatarURL = `https://gravatar.com/avatar/${emailHash}.jpg?d=robohash`;
-    }
+userSchemas.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
 
-    if(!this.isModified('password')) return next();
+  const salt = await bcrypt.genSalt(10);
 
-    const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
 
-    this.password = await bcrypt.hash(this.password, salt);
-    
-    next();
-  }); 
-  
-  export const User = model('User', userSchemas);
+  next();
+});
+
+export const User = model('User', userSchemas);

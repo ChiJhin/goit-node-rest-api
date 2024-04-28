@@ -1,30 +1,32 @@
-import { model, Schema, Types } from "mongoose";
+import { model, Schema, Types } from 'mongoose';
 
-const contactSchemas = new Schema({
+const contactSchemas = new Schema(
+  {
     name: {
-        type: String,
-        required: [true, "Set name for contact"],
+      type: String,
+      required: [true, 'Set name for contact'],
     },
-    email: { 
-        type: String, 
-        unique: true,
+    email: {
+      type: String,
+      unique: true,
     },
-    phone: { 
-        type: String, 
-
-    }, 
-    favorite: { 
-        type: Boolean, 
-        default: false, 
+    phone: {
+      type: String,
     },
-    owner: { 
-        type: Types.ObjectId, 
-        ref: "User", 
-        required: true,
+    favorite: {
+      type: Boolean,
+      default: false,
     },
-}, { 
-    versionKey: false,  
+    owner: {
+      type: Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+  },
+  {
+    versionKey: false,
     // timestamps: true,
-})
+  }
+);
 
-export const Contacts = model("Contacts", contactSchemas);
+export const Contacts = model('Contacts', contactSchemas);

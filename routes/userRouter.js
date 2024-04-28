@@ -1,15 +1,13 @@
-import express from "express";
+import express from 'express';
 
-import { getCurrent, logIn, logout, signUp, updateMe } from "../controllers/userControllers.js";
-import { checkUserLogIn, checkUserSingUp, protect } from "../middlewares/authMiddlewares.js"
-import { uploadAvatar } from "../middlewares/userMiddlewares.js";
+import { getCurrent, logIn, logout, signUp } from '../controllers/userControllers.js';
+import { checkUserLogIn, checkUserSingUp, protect } from '../middlewares/authMiddlewares.js';
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/register", checkUserSingUp , signUp);
-router.post("/login", checkUserLogIn, logIn);
-router.post("/logout", protect ,logout);
-router.get("/current", protect, getCurrent);
-router.patch('/avatars',protect, uploadAvatar, updateMe)
+router.post('/register', checkUserSingUp, signUp);
+router.post('/login', checkUserLogIn, logIn);
+router.post('/logout', protect, logout);
+router.get('/current', protect, getCurrent);
 
-export {router};
+export { router };
