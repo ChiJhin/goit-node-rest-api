@@ -7,9 +7,10 @@ export const signUpSchema = validate(data =>
     .options({ abortEarly: false })
     .keys({
       email: Joi.string()
-        .required()
-        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-      password: Joi.string().required().min(6).regex(PASSWD_REGEX),
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        .required(),
+
+      password: Joi.string().min(6).regex(PASSWD_REGEX).required(),
     })
     .validate(data)
 );
@@ -19,9 +20,9 @@ export const loginSchema = validate(data =>
     .options({ abortEarly: false })
     .keys({
       email: Joi.string()
-        .required()
-        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-      password: Joi.string().required().min(6).regex(PASSWD_REGEX),
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        .required(),
+      password: Joi.string().min(6).regex(PASSWD_REGEX).required(),
     })
     .validate(data)
 );
