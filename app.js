@@ -19,14 +19,12 @@ mongoose
     process.exit(1); // вихід з програми
   });
 
-if (process.env.NODE_ENV === DEV) {
-  app.use(morgan('dev'));
-} else {
-  app.use(morgan('tiny'));
-}
+if (process.env.NODE_ENV === DEV) app.use(morgan('dev'));
+else app.use(morgan('tiny'));
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 const pathPrefix = '/api';
 
