@@ -1,6 +1,8 @@
 import { catchAsync } from '../helpers/catchAsync.js';
 import { User } from '../models/usersModel.js';
 import { checkUser, register, updateAvatarService } from '../services/userServices.js';
+import HttpError from '../helpers/HttpError.js';
+import { sendEmail } from '../services/emailSeriveces.js';
 
 export const signUp = catchAsync(async (req, res) => {
   const newUser = await register(req.body);
@@ -47,5 +49,19 @@ export const updateAvatar = catchAsync(async (req, res) => {
 
   res.status(200).json({
     user: updatedUser,
+  });
+});
+
+export const resendEmail = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) throw new HttpError(404, 'User not found');
+  if (user.verify) throw new HttpError(400, 'Verification has already been passed');
+
+  const emailSend = await sendEmail(email, user.verificationToken);
+
+  if (!emailSend) throw new HttpError(500, 'Email not send');
+  res.status(200).json({
+    message: 'Verification email sent',
   });
 });
