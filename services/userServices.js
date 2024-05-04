@@ -1,16 +1,28 @@
 import bcrypt from 'bcrypt';
+import { nanoid } from 'nanoid';
 
 import HttpError from '../helpers/HttpError.js';
 import { User } from '../models/usersModel.js';
 import { createToken } from './jwtServices.js';
 import { ImageService } from './avatarServise.js';
+import { sendEmail } from './emailSeriveces.js';
 
 export const register = async data => {
+  const verificationToken = nanoid();
+
   const newUser = await User.create({
     ...data,
+    verificationToken,
   });
 
+  const email = await sendEmail(newUser.email, newUser.verificationToken);
+
+  if (!email) {
+    throw new HttpError(500, 'Email not send');
+  }
+
   newUser.password = undefined;
+  newUser.verificationToken = undefined;
 
   return newUser;
 };
